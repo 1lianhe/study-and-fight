@@ -13,7 +13,6 @@
            1. 核心色彩变量与主题系统
            --------------------------------------------------------- */
         :root {
-            /* 浅色模式基础背景与文字 */
             --bg-color: #f5f5f5;
             --card-bg: #ffffff;
             --text-main: #222222;
@@ -22,17 +21,14 @@
             --border-color: #eaeaea;
             --input-bg: #f9f9f9;
             
-            /* 品牌颜色 */
-            --primary-color: #8b0000; /* 深红 */
+            --primary-color: #8b0000; 
             --primary-hover: #a52a2a;
             
-            /* 功能状态颜色 */
-            --like-color: #ff4757;    /* 点赞红 */
-            --coin-color: #f5a623;    /* 投币金 */
-            --forward-color: #2ed573; /* 转发绿 */
-            --notify-color: #ff3b30;  /* 消息红点 */
+            --like-color: #ff4757;    
+            --coin-color: #f5a623;    
+            --forward-color: #2ed573; 
+            --notify-color: #ff3b30;  
             
-            /* 聊天专用配色 */
             --self-msg-bg: #8b0000;
             --self-msg-text: #ffffff;
             --other-msg-bg: #f0f0f0;
@@ -40,7 +36,6 @@
             --chat-bg: #f2f2f2;
         }
 
-        /* 深色模式变量覆盖 */
         body.dark-mode {
             --bg-color: #121212;
             --card-bg: #1e1e1e;
@@ -74,31 +69,17 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding-bottom: 65px; /* 留给底部导航栏的高度 */
+            padding-bottom: 65px;
             font-size: 15px;
             line-height: 1.5;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* 页面显隐控制 */
-        .page {
-            display: none;
-            min-height: calc(100vh - 65px);
-        }
-        .page.active {
-            display: block;
-        }
+        .page { display: none; min-height: calc(100vh - 65px); }
+        .page.active { display: block; }
 
-        /* 聊天等需要固定全屏的页面 */
-        .page.fixed-page {
-            display: none;
-            flex-direction: column;
-            height: calc(100vh - 65px);
-            overflow: hidden;
-        }
-        .page.fixed-page.active {
-            display: flex;
-        }
+        .page.fixed-page { display: none; flex-direction: column; height: calc(100vh - 65px); overflow: hidden; }
+        .page.fixed-page.active { display: flex; }
 
         /* ---------------------------------------------------------
            3. 顶部与底部导航栏
@@ -159,12 +140,8 @@
             position: relative;
             transition: color 0.2s;
         }
-        .tab.active {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
+        .tab.active { color: var(--primary-color); font-weight: bold; }
 
-        /* 微信风的未读消息红点 */
         .red-dot {
             position: absolute;
             top: 16px;
@@ -178,7 +155,7 @@
         }
 
         /* ---------------------------------------------------------
-           4. 开场动画 (他日既是头颅断)
+           4. 开场动画
            --------------------------------------------------------- */
         #splash-screen {
             position: fixed;
@@ -308,7 +285,7 @@
         }
 
         /* ---------------------------------------------------------
-           7. 个人主页 (沉浸式大图)
+           7. 个人主页
            --------------------------------------------------------- */
         .home-top-section {
             position: relative;
@@ -415,7 +392,6 @@
         .settings-item:last-child { border-bottom: none; }
         .settings-item.danger { color: #d32f2f; justify-content: center; font-weight: bold; }
         
-        /* 开关按钮 */
         .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 28px; }
@@ -437,8 +413,11 @@
         .post-card { display: block; position: relative; }
         .card-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: var(--text-main); line-height: 1.4; }
         .card-desc { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .card-meta { font-size: 13px; color: var(--text-light); display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
-        .card-stats span { margin-right: 12px; font-size: 12px; color: var(--text-light); }
+        .card-meta { font-size: 13px; color: var(--text-light); display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        
+        /* 重点：数据展示 */
+        .card-stats { display: flex; gap: 10px; }
+        .card-stats span { font-size: 12px; background: var(--bg-color); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border-color); }
 
         .delete-btn { position: absolute; right: 15px; top: 15px; background-color: #ffeeee; color: #d32f2f; border: 1px solid #ffcccc; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; z-index: 2; }
         .post-thumb { width: 75px; height: 75px; border-radius: 8px; object-fit: cover; margin-left: 15px; background-color: var(--border-color); }
@@ -471,7 +450,7 @@
         .bili-count { font-weight: bold; }
 
         /* ---------------------------------------------------------
-           11. 评论区 (楼中楼与 @ 功能)
+           11. 评论区
            --------------------------------------------------------- */
         .comment-section-title { padding: 15px; font-weight: bold; font-size: 16px; margin: 0 15px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
         .comment-wrapper { background-color: var(--card-bg); padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; }
@@ -494,7 +473,7 @@
         .comment-input-area button { width: auto; padding: 0 20px; margin-top: 0; border-radius: 20px; }
 
         /* ---------------------------------------------------------
-           12. 交流与聊天室 (微信风)
+           12. 聊天室
            --------------------------------------------------------- */
         .chat-section-title { padding: 15px 20px 5px 20px; font-weight: bold; color: var(--text-light); font-size: 13px; }
         .chat-container { flex: 1; overflow-y: auto; padding: 15px; background-color: var(--chat-bg); display: flex; flex-direction: column; }
@@ -521,16 +500,13 @@
 </head>
 <body>
 
-    <!-- ================= 悬浮提示 ================= -->
     <div id="toast-msg"></div>
 
-    <!-- ================= 开场动画 ================= -->
     <div id="splash-screen" ondblclick="endSplash()">
         <div class="splash-text line1">他日既是头颅断，</div>
         <div class="splash-text line2">野魄亦将真理传。</div>
     </div>
 
-    <!-- ================= 登录页 ================= -->
     <div id="page-auth" class="page">
         <div class="auth-logo">马列毛学习交流社区</div>
         <div class="auth-tabs">
@@ -542,7 +518,6 @@
         <button class="auth-btn" id="auth-submit-btn" onclick="submitAuth()">登 录</button>
     </div>
 
-    <!-- ================= 主页 ================= -->
     <div id="page-home" class="page">
         <div class="home-top-section" id="home-cover">
             <div class="home-avatar" id="home-avatar"></div>
@@ -572,7 +547,6 @@
         </div>
     </div>
 
-    <!-- ================= 设置 ================= -->
     <div id="page-settings" class="page">
         <div class="header"><span class="back" onclick="navTo('home')">‹ 返回</span> 个人设置</div>
         <div class="settings-group">
@@ -594,7 +568,6 @@
         </div>
     </div>
 
-    <!-- ================= 看帖 ================= -->
     <div id="page-list" class="page">
         <div class="header" id="list-header">学习交流社区</div>
         <div class="cat-bar" id="cat-bar">
@@ -611,7 +584,6 @@
         <div class="list" id="post-list-container"></div>
     </div>
 
-    <!-- ================= 详情 ================= -->
     <div id="page-detail" class="page">
         <div class="header"><span class="back" onclick="navTo('list')">‹ 返回</span> 详情</div>
         <div id="detail-container"></div>
@@ -626,7 +598,6 @@
         </div>
     </div>
 
-    <!-- ================= 发帖 ================= -->
     <div id="page-post" class="page">
         <div class="header">发新帖</div>
         <div class="form-group">
@@ -650,7 +621,6 @@
         </div>
     </div>
 
-    <!-- ================= 交流大厅 ================= -->
     <div id="page-chat" class="page">
         <div class="header">
             交流大厅
@@ -665,7 +635,6 @@
         <div class="list" id="group-list-container"></div>
     </div>
 
-    <!-- ================= 聊天室 ================= -->
     <div id="page-chat-room" class="page fixed-page">
         <div class="header">
             <span class="back" onclick="closeChatRoom()">‹ 返回</span>
@@ -681,13 +650,11 @@
         </div>
     </div>
 
-    <!-- 隐藏文件控件 -->
     <input type="file" id="file-uploader" accept="image/*" style="display:none">
     <input type="file" id="post-image-uploader" accept="image/*" style="display:none">
     <input type="file" id="chat-image-uploader" accept="image/*" style="display:none">
     <input type="file" id="chat-file-uploader" style="display:none">
 
-    <!-- 底部导航 -->
     <div class="bottom-bar" id="bottom-bar">
         <div class="tab active" onclick="navTo('home')">主页</div>
         <div class="tab" onclick="navTo('list')">看帖</div>
@@ -698,12 +665,9 @@
         <div class="tab" onclick="navTo('post')">发帖</div>
     </div>
 
-    <!-- ==========================================================================
-         JavaScript 逻辑核心
-         ========================================================================== -->
     <script>
         // ---------------------------------------------------------
-        // 1. 动画与系统初始化
+        // 1. 系统初始化与配置
         // ---------------------------------------------------------
         var splashTimer = setTimeout(endSplash, 9000);
 
@@ -733,9 +697,6 @@
             setTimeout(() => { t.style.display = 'none'; }, 2500);
         }
 
-        // ---------------------------------------------------------
-        // 2. 全局状态与配置
-        // ---------------------------------------------------------
         var apiUrl = 'https://lyoecyzzlvsgfrgqvjys.supabase.co/rest/v1';
         var headers = { 
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5b2VjeXp6bHZzZ2ZyZ3F2anlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MjIxNTMsImV4cCI6MjEwODk5ODE1M30.rS9n9N6O7A0OvLDnSWbXf_N8N2Iz0c_CsixwI6PPRyQ', 
@@ -744,53 +705,26 @@
             'Prefer': 'return=representation' 
         };
 
-        var currentNickname = '';
-        var isAdmin = false;
-        var authMode = 'login';
-        
-        var currentCategory = 'article';
-        var currentListMode = 'board'; 
-        var allPostsCache = [];
-        
-        var postImageBase64 = '';
-        var currentPostId = null;
-        
-        var myCoins = 0;
-        var myLastCheckin = '';
-        var myTotalLikes = 0;
-        
-        var chatTimer = null; 
-        var notifyTimer = null; 
-        var currentChatType = 'private'; 
-        var currentChatId = ''; 
-        var lastMsgId = 0;
-        var isSendingMsg = false;
-        
-        var replyToCommentId = null;
-        var replyToNickname = '';
+        var currentNickname = '', isAdmin = false, authMode = 'login';
+        var currentCategory = 'article', currentListMode = 'board', allPostsCache = [];
+        var postImageBase64 = '', currentPostId = null;
+        var myCoins = 0, myLastCheckin = '', myTotalLikes = 0;
+        var chatTimer = null, notifyTimer = null;
+        var currentChatType = 'private', currentChatId = '', lastMsgId = 0, isSendingMsg = false;
+        var replyToCommentId = null, replyToNickname = '';
 
-        if (localStorage.getItem('dark_mode') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
+        if (localStorage.getItem('dark_mode') === 'true') document.body.classList.add('dark-mode');
         document.getElementById('dark-mode-toggle').checked = localStorage.getItem('dark_mode') === 'true';
         var rbg = localStorage.getItem('read_bg');
-        if (rbg) {
-            document.getElementById('page-detail').style.backgroundImage = `url(${rbg})`;
-            document.getElementById('page-detail').style.backgroundSize = 'cover';
-        }
+        if (rbg) { document.getElementById('page-detail').style.backgroundImage = `url(${rbg})`; document.getElementById('page-detail').style.backgroundSize = 'cover'; }
 
         function toggleDarkMode() {
-            if (document.body.classList.contains('dark-mode')) {
-                document.body.classList.remove('dark-mode');
-                localStorage.setItem('dark_mode', 'false');
-            } else {
-                document.body.classList.add('dark-mode');
-                localStorage.setItem('dark_mode', 'true');
-            }
+            document.body.classList.toggle('dark-mode'); 
+            localStorage.setItem('dark_mode', document.body.classList.contains('dark-mode'));
         }
 
         // ---------------------------------------------------------
-        // 3. 账号系统与设置
+        // 2. 账号系统
         // ---------------------------------------------------------
         function switchAuthMode(m) {
             authMode = m;
@@ -853,27 +787,22 @@
             document.getElementById('page-auth').classList.remove('active');
             document.getElementById('bottom-bar').style.display = 'flex';
             document.getElementById('home-nickname').innerText = currentNickname;
-            
             if (isAdmin) { 
                 document.getElementById('admin-badge').style.display = 'inline-block'; 
                 document.getElementById('notice-option').style.display = 'block'; 
             }
-            
             var av = localStorage.getItem('avatar_' + currentNickname); if (av) document.getElementById('home-avatar').style.backgroundImage = `url(${av})`;
             var cv = localStorage.getItem('cover_' + currentNickname); if (cv) document.getElementById('home-cover').style.backgroundImage = `url(${cv})`;
-            
             loadTotalLikes();
             navTo('home');
         }
 
         function logout() { if (confirm('退出登录？')) { localStorage.removeItem('nickname'); location.reload(); } }
-        
-        function deleteAccount() { 
-            if (confirm('注销账号？')) { 
-                fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'DELETE', headers }).then(() => { localStorage.clear(); location.reload(); }); 
-            } 
-        }
+        function deleteAccount() { if (confirm('注销账号？')) { fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'DELETE', headers }).then(() => { localStorage.clear(); location.reload(); }); } }
 
+        // ---------------------------------------------------------
+        // 3. 用户个人数据与设置
+        // ---------------------------------------------------------
         function loadTotalLikes() {
             fetch(apiUrl + `/posts?author=eq.${currentNickname}&select=likes_count`, { headers })
             .then(r => r.json())
@@ -886,23 +815,13 @@
         function doCheckIn() {
             var today = new Date().toDateString();
             if (myLastCheckin === today) return showToast('今天已经签到过了');
-            
             fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ coins: myCoins + 1, last_checkin: today }) })
-            .then(res => {
-                if(res.ok) {
-                    myCoins++; myLastCheckin = today;
-                    document.getElementById('home-coins').innerText = `🪙 ${myCoins}`;
-                    showToast('签到成功！获得 1 硬币');
-                }
-            });
+            .then(res => { if(res.ok) { myCoins++; myLastCheckin = today; document.getElementById('home-coins').innerText = `🪙 ${myCoins}`; showToast('签到成功！获得 1 硬币'); } });
         }
 
         function changeSignature() {
             var s = prompt('新签名：', document.getElementById('home-signature').innerText);
-            if (s !== null) {
-                fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ signature: s }) })
-                .then(() => document.getElementById('home-signature').innerText = s || '这家伙很懒');
-            }
+            if (s !== null) fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ signature: s }) }).then(() => document.getElementById('home-signature').innerText = s || '这家伙很懒');
         }
 
         function changeNickname() {
@@ -916,10 +835,7 @@
             }).then(() => { showToast('修改成功，需重新登录'); localStorage.removeItem('nickname'); setTimeout(() => location.reload(), 1500); }).catch(e => showToast(e.message));
         }
 
-        function changePassword() { 
-            var p = prompt('新密码：'); 
-            if (p) fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ password: p }) }).then(() => showToast('密码已修改')); 
-        }
+        function changePassword() { var p = prompt('新密码：'); if (p) fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ password: p }) }).then(() => showToast('密码已修改')); }
 
         function uploadImage(type) {
             var input = document.getElementById('file-uploader');
@@ -936,7 +852,7 @@
         }
 
         // ---------------------------------------------------------
-        // 4. 路由与帖子核心
+        // 4. 页面路由与帖子列表
         // ---------------------------------------------------------
         function navTo(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -953,11 +869,7 @@
                     loadPosts(); 
                 } 
             }
-            if (id === 'chat') { 
-                document.querySelectorAll('.tab')[2].classList.add('active'); 
-                loadChatHall(); 
-                document.getElementById('chat-red-dot').style.display = 'none'; 
-            }
+            if (id === 'chat') { document.querySelectorAll('.tab')[2].classList.add('active'); loadChatHall(); document.getElementById('chat-red-dot').style.display = 'none'; }
             if (id === 'post') document.querySelectorAll('.tab')[3].classList.add('active');
             window.scrollTo(0, 0);
         }
@@ -970,17 +882,13 @@
 
         function loadMyPosts() { 
             currentListMode = 'my'; navTo('list'); 
-            document.getElementById('cat-bar').style.display = 'none'; 
-            document.getElementById('search-bar').style.display = 'none'; 
-            document.getElementById('list-header').innerText = '我的帖子'; 
+            document.getElementById('cat-bar').style.display = 'none'; document.getElementById('search-bar').style.display = 'none'; document.getElementById('list-header').innerText = '我的帖子'; 
             fetch(apiUrl + '/posts?select=*&author=eq.' + currentNickname + '&order=created_at.desc', { headers }).then(r => r.json()).then(d => { allPostsCache = d; renderPosts(); }); 
         }
 
         function loadMyFavorites() { 
             currentListMode = 'fav'; navTo('list'); 
-            document.getElementById('cat-bar').style.display = 'none'; 
-            document.getElementById('search-bar').style.display = 'none'; 
-            document.getElementById('list-header').innerText = '我的收藏'; 
+            document.getElementById('cat-bar').style.display = 'none'; document.getElementById('search-bar').style.display = 'none'; document.getElementById('list-header').innerText = '我的收藏'; 
             fetch(apiUrl + '/favorites?user_nickname=eq.' + currentNickname, { headers }).then(r => r.json()).then(d => { 
                 if (d.length === 0) return document.getElementById('post-list-container').innerHTML = '<div class="empty">暂无收藏</div>'; 
                 var ids = d.map(x => x.post_id).join(','); 
@@ -998,18 +906,16 @@
             
             f.forEach(p => {
                 var d = new Date(p.created_at), ds = d.toDateString();
-                if (ds !== lastD && currentListMode === 'board') { 
-                    html += `<div style="text-align:center;margin:15px 0;color:var(--text-light);font-size:13px;"><span style="background:var(--border-color);padding:4px 12px;border-radius:10px;">${d.getMonth()+1}月${d.getDate()}日</span></div>`; 
-                    lastD = ds; 
-                }
+                if (ds !== lastD && currentListMode === 'board') { html += `<div style="text-align:center;margin:15px 0;color:var(--text-light);font-size:13px;"><span style="background:var(--border-color);padding:4px 12px;border-radius:10px;">${d.getMonth()+1}月${d.getDate()}日</span></div>`; lastD = ds; }
                 
                 var isNotice = p.category === 'notice' ? '<span style="color:#d32f2f;border:1px solid #d32f2f;padding:1px 3px;border-radius:3px;margin-right:5px;font-size:12px;">公告</span>' : '';
                 var del = (isAdmin || p.author === currentNickname) ? `<div class="delete-btn" onclick="deletePost(event,${p.id})">删除</div>` : '';
                 var thumb = p.image_url ? `<img src="${p.image_url}" class="post-thumb">` : '';
                 
-                // 展示统计数据：点赞、收藏、转发
+                // 重点修复：展示点赞、投币、收藏、转发数
                 var statsHtml = `<div class="card-stats">
                     <span>👍 ${p.likes_count||0}</span>
+                    <span>🪙 ${p.coins_received||0}</span>
                     <span>⭐ ${p.favorites_count||0}</span>
                     <span>↗️ ${p.forwards_count||0}</span>
                 </div>`;
@@ -1031,103 +937,72 @@
         function switchCategory(c, el) { 
             currentCategory = c; currentListMode = 'board'; 
             document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active')); 
-            el.classList.add('active'); 
-            loadPosts(); 
+            el.classList.add('active'); loadPosts(); 
         }
 
         function deletePost(e, id) { 
-            e.stopPropagation(); 
-            if (confirm('删帖？')) fetch(apiUrl + '/posts?id=eq.' + id, { method: 'DELETE', headers }).then(() => currentListMode === 'my' ? loadMyPosts() : loadPosts()); 
+            e.stopPropagation(); if (confirm('删帖？')) fetch(apiUrl + '/posts?id=eq.' + id, { method: 'DELETE', headers }).then(() => currentListMode === 'my' ? loadMyPosts() : loadPosts()); 
         }
 
+        // ---------------------------------------------------------
+        // 5. 发帖逻辑
+        // ---------------------------------------------------------
         function uploadPostImage() {
             var input = document.getElementById('post-image-uploader');
             input.onchange = e => {
                 var f = e.target.files[0]; if (!f) return;
                 var r = new FileReader(); 
-                r.onload = ev => { 
-                    postImageBase64 = ev.target.result; 
-                    var p = document.getElementById('post-img-preview'); 
-                    p.src = postImageBase64; p.style.display = 'block'; 
-                    document.getElementById('remove-img-btn').style.display = 'block'; 
-                }; 
+                r.onload = ev => { postImageBase64 = ev.target.result; var p = document.getElementById('post-img-preview'); p.src = postImageBase64; p.style.display = 'block'; document.getElementById('remove-img-btn').style.display = 'block'; }; 
                 r.readAsDataURL(f);
-            }; 
-            input.click();
+            }; input.click();
         }
 
-        function removePostImage() { 
-            postImageBase64 = ''; 
-            document.getElementById('post-img-preview').style.display = 'none'; 
-            document.getElementById('remove-img-btn').style.display = 'none'; 
-        }
+        function removePostImage() { postImageBase64 = ''; document.getElementById('post-img-preview').style.display = 'none'; document.getElementById('remove-img-btn').style.display = 'none'; }
 
         function publishPost() {
-            var cat = document.getElementById('post-category').value;
-            var t = document.getElementById('post-title').value;
-            var c = document.getElementById('post-content').value;
-            
+            var cat = document.getElementById('post-category').value, t = document.getElementById('post-title').value, c = document.getElementById('post-content').value;
             if (!t || !c) return showToast('标题和正文不能为空');
-            
-            var btn = document.getElementById('post-submit-btn');
-            btn.disabled = true; btn.innerText = '发布中...';
+            var btn = document.getElementById('post-submit-btn'); btn.disabled = true; btn.innerText = '发布中...';
 
             fetch(apiUrl + '/posts', { 
                 method: 'POST', headers, 
-                body: JSON.stringify({ 
-                    title: t, content: c, author: currentNickname, category: cat, 
-                    image_url: postImageBase64, likes_count: 0, favorites_count: 0, forwards_count: 0 
-                }) 
+                body: JSON.stringify({ title: t, content: c, author: currentNickname, category: cat, image_url: postImageBase64, likes_count: 0, coins_received: 0, favorites_count: 0, forwards_count: 0 }) 
             }).then(() => {
                 showToast('发布成功'); 
-                document.getElementById('post-title').value = ''; 
-                document.getElementById('post-content').value = ''; 
-                removePostImage(); 
+                document.getElementById('post-title').value = ''; document.getElementById('post-content').value = ''; removePostImage(); 
                 currentCategory = cat; currentListMode = 'board'; navTo('list');
-            }).finally(() => {
-                btn.disabled = false; btn.innerText = '发布';
-            });
+            }).finally(() => { btn.disabled = false; btn.innerText = '发布'; });
         }
 
         // ---------------------------------------------------------
-        // 5. 详情页与互动（防刷逻辑核心）
+        // 6. 详情页与防刷互动
         // ---------------------------------------------------------
         function openDetail(id) {
-            currentPostId = id; 
-            navTo('detail'); 
-            document.getElementById('detail-container').innerHTML = '加载中...';
-            cancelReply(); 
+            currentPostId = id; navTo('detail'); document.getElementById('detail-container').innerHTML = '加载中...'; cancelReply(); 
             
-            Promise.all([
-                fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()),
-                fetch(apiUrl + `/post_likes?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json()),
-                fetch(apiUrl + `/post_coins?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json()),
-                fetch(apiUrl + `/favorites?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json())
-            ]).then(results => {
-                var p = results[0][0];
-                var isLiked = results[1].length > 0;
-                var isCoined = results[2].length > 0;
-                var isFaved = results[3].length > 0;
+            // 先获取帖子主体内容（保证不白屏）
+            fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(posts => {
+                if(!posts || posts.length === 0) return;
+                var p = posts[0];
                 
-                if (!p) return;
-
                 var mediaHtml = p.image_url ? `<img src="${p.image_url}" class="detail-img">` : '';
                 var friendBtn = (p.author !== currentNickname) ? `<button id="add-friend-btn" style="background:var(--primary-color);color:#fff;border:none;padding:4px 12px;border-radius:12px;font-size:12px;cursor:pointer;margin-left:10px;" onclick="addFriend('${p.author}')">加好友</button>` : '';
                 var forwardUrl = window.location.href.split('?')[0] + '?post=' + id;
-
+                
+                // 先渲染主体，互动按钮默认未点亮，稍后异步检测状态
                 var actionsHtml = `
                     <div class="bili-action-bar">
-                        <div class="bili-btn ${isLiked ? 'active' : ''}" onclick="doLike(${p.id}, ${isLiked})">
+                        <div class="bili-btn" id="btn-like" onclick="doLike(${p.id})">
                             <div class="bili-icon">👍</div>
                             <div class="bili-count">${p.likes_count||0}</div>
                         </div>
-                        <div class="bili-btn coin ${isCoined ? 'active' : ''}" onclick="doCoin(${p.id}, ${isCoined})">
+                        <div class="bili-btn" id="btn-coin" onclick="doCoin(${p.id})">
                             <div class="bili-icon">🪙</div>
                             <div class="bili-count">${p.coins_received||0}</div>
                         </div>
-                        <div class="bili-btn ${isFaved ? 'active' : ''}" onclick="toggleFavorite(${p.id}, ${isFaved})">
+                        <div class="bili-btn" id="btn-fav" onclick="toggleFavorite(${p.id})">
                             <div class="bili-icon">⭐</div>
-                            <div>${isFaved ? '已收藏' : '收藏'}</div>
+                            <div>收藏</div>
                         </div>
                         <div class="bili-btn" onclick="doForward('${forwardUrl}', '${p.title}')">
                             <div class="bili-icon">↗️</div>
@@ -1148,13 +1023,37 @@
                     </div>`;
                     
                 if (p.author !== currentNickname) checkFriendStatus(p.author);
+                
+                // 异步检测当前用户对这篇文章的状态（是否点过赞/投过币/收过藏）
+                checkPostStatus(id);
             });
 
             loadComments(id);
         }
 
-        function doLike(id, isLiked) {
-            if (isLiked) return showToast('你已经点过赞了！');
+        // 检查帖子互动状态
+        function checkPostStatus(id) {
+            // 检查点赞
+            fetch(apiUrl + `/post_likes?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
+            .then(r => r.json()).then(d => {
+                if (d.length > 0) document.getElementById('btn-like').classList.add('active');
+            });
+            // 检查投币
+            fetch(apiUrl + `/post_coins?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
+            .then(r => r.json()).then(d => {
+                if (d.length > 0) { var b = document.getElementById('btn-coin'); b.classList.add('active'); b.classList.add('coin'); }
+            });
+            // 检查收藏
+            fetch(apiUrl + `/favorites?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
+            .then(r => r.json()).then(d => {
+                if (d.length > 0) { var b = document.getElementById('btn-fav'); b.classList.add('active'); b.innerHTML = '<div class="bili-icon">⭐</div><div>已收藏</div>'; }
+            });
+        }
+
+        function doLike(id) {
+            var btn = document.getElementById('btn-like');
+            if (btn.classList.contains('active')) return showToast('你已经点过赞了！');
+            
             fetch(apiUrl + '/post_likes', { method: 'POST', headers, body: JSON.stringify({ post_id: id, user_nickname: currentNickname }) })
             .then(res => {
                 if(!res.ok) throw new Error('记录失败');
@@ -1164,8 +1063,9 @@
             }).then(() => { openDetail(id); loadTotalLikes(); }).catch(e => showToast(e.message));
         }
 
-        function doCoin(id, isCoined) {
-            if (isCoined) return showToast('你已经投过币了！');
+        function doCoin(id) {
+            var btn = document.getElementById('btn-coin');
+            if (btn.classList.contains('active')) return showToast('你已经投过币了！');
             if (myCoins <= 0) return showToast('硬币不足，去主页签到吧！');
             if (!confirm('确定消耗 1 个硬币投给这篇帖子吗？')) return;
 
@@ -1180,9 +1080,9 @@
             }).then(() => { showToast('投币成功！'); openDetail(id); });
         }
 
-        function toggleFavorite(id, isFaved) {
-            if (isFaved) {
-                // 如果已经收藏，取消收藏并减少计数
+        function toggleFavorite(id) {
+            var btn = document.getElementById('btn-fav');
+            if (btn.classList.contains('active')) {
                 fetch(apiUrl + '/favorites?user_nickname=eq.' + currentNickname + '&post_id=eq.' + id, { method: 'DELETE', headers })
                 .then(() => {
                     fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
@@ -1190,7 +1090,6 @@
                     });
                 }).finally(() => openDetail(id));
             } else {
-                // 如果是收藏，增加计数
                 fetch(apiUrl + '/favorites', { method: 'POST', headers, body: JSON.stringify({ user_nickname: currentNickname, post_id: id }) })
                 .then(() => {
                     fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
@@ -1201,17 +1100,12 @@
         }
 
         function doForward(url, title) {
-            // 转发计数增加
             fetch(apiUrl + '/posts?id=eq.' + currentPostId, { headers }).then(r => r.json()).then(d => {
                 return fetch(apiUrl + '/posts?id=eq.' + currentPostId, { method: 'PATCH', headers, body: JSON.stringify({ forwards_count: (d[0].forwards_count || 0) + 1 }) });
             });
-
             var txt = `【分享文章】${title}\n${url}`;
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(txt).then(() => {
-                    showToast('链接已复制，快去粘贴给好友吧！');
-                    openDetail(currentPostId); 
-                });
+                navigator.clipboard.writeText(txt).then(() => { showToast('链接已复制'); openDetail(currentPostId); });
             } else {
                 prompt('复制链接：', txt);
             }
@@ -1231,46 +1125,34 @@
         }
 
         // ---------------------------------------------------------
-        // 6. 评论区逻辑 (楼中楼、@提醒)
+        // 7. 评论区功能
         // ---------------------------------------------------------
         function loadComments(postId) {
             fetch(apiUrl + `/comments?post_id=eq.${postId}&order=created_at.asc`, { headers })
             .then(r => r.json())
             .then(comments => {
-                if (comments.length === 0) {
-                    document.getElementById('comment-container').innerHTML = '<div class="empty">暂无回复，来抢沙发吧</div>';
-                    return;
-                }
-
+                if (comments.length === 0) { document.getElementById('comment-container').innerHTML = '<div class="empty">暂无回复</div>'; return; }
                 var mainComments = comments.filter(c => !c.parent_id);
                 var subComments = comments.filter(c => c.parent_id);
-
                 var html = '';
                 mainComments.forEach(mc => {
                     html += renderSingleComment(mc, false);
-                    
                     var children = subComments.filter(sc => sc.parent_id === mc.id);
                     if (children.length > 0) {
                         html += '<div class="sub-comments">';
-                        children.forEach(cc => {
-                            html += renderSingleComment(cc, true);
-                        });
+                        children.forEach(cc => { html += renderSingleComment(cc, true); });
                         html += '</div>';
                     }
                 });
-                
                 document.getElementById('comment-container').innerHTML = html;
             });
         }
 
         function renderSingleComment(c, isSub) {
-            // 将 @昵称 替换为高亮样式
             var textHtml = c.content.replace(/@([^\s]+)/g, '<span class="at-user">@$1</span>');
-            
             if (isSub) {
                 return `<div class="sub-comment-item">
-                            <span class="sub-author">${c.author}</span>: 
-                            <span>${textHtml}</span>
+                            <span class="sub-author">${c.author}</span>: <span>${textHtml}</span>
                             <div style="margin-top:5px; font-size:11px; color:var(--text-light); display:flex; gap:10px;">
                                 <span onclick="prepareReply(${c.id}, '${c.author}')">回复</span>
                                 <span class="comment-action-btn" id="clike-${c.id}" onclick="doCommentLike(${c.id})">👍 <span class="count">${c.likes_count||0}</span></span>
@@ -1292,17 +1174,13 @@
         }
 
         function prepareReply(commentId, nickname) {
-            replyToCommentId = commentId;
-            replyToNickname = nickname;
-            var input = document.getElementById('comment-content');
-            input.value = `@${nickname} `;
-            input.focus();
+            replyToCommentId = commentId; replyToNickname = nickname;
+            var input = document.getElementById('comment-content'); input.value = `@${nickname} `; input.focus();
             document.getElementById('cancel-reply-btn').style.display = 'inline';
         }
 
         function cancelReply() {
-            replyToCommentId = null;
-            replyToNickname = '';
+            replyToCommentId = null; replyToNickname = '';
             document.getElementById('comment-content').value = '';
             document.getElementById('cancel-reply-btn').style.display = 'none';
         }
@@ -1310,40 +1188,24 @@
         function submitComment() {
             var c = document.getElementById('comment-content').value.trim();
             if(!c) return showToast('内容不能为空');
-            
-            var payload = { 
-                post_id: currentPostId, 
-                content: c, 
-                author: currentNickname,
-                parent_id: replyToCommentId 
-            };
-
-            fetch(apiUrl + '/comments', { method: 'POST', headers, body: JSON.stringify(payload) })
-            .then(() => { 
-                cancelReply(); 
-                loadComments(currentPostId); 
-                showToast('发送成功');
-            });
+            fetch(apiUrl + '/comments', { method: 'POST', headers, body: JSON.stringify({ post_id: currentPostId, content: c, author: currentNickname, parent_id: replyToCommentId }) })
+            .then(() => { cancelReply(); loadComments(currentPostId); showToast('发送成功'); });
         }
 
         function doCommentLike(commentId) {
             var btn = document.getElementById('clike-' + commentId);
             if(btn.classList.contains('liked')) return showToast('已经赞过了');
-
             fetch(apiUrl + '/comment_likes', { method: 'POST', headers, body: JSON.stringify({ comment_id: commentId, user_nickname: currentNickname }) })
             .then(res => {
                 if(!res.ok) throw new Error('已经赞过了');
                 return fetch(apiUrl + '/comments?id=eq.' + commentId, { headers }).then(r => r.json()).then(d => {
                     return fetch(apiUrl + '/comments?id=eq.' + commentId, { method: 'PATCH', headers, body: JSON.stringify({ likes_count: (d[0].likes_count || 0) + 1 }) });
                 });
-            })
-            .then(() => {
-                loadComments(currentPostId); 
-            }).catch(e => showToast(e.message));
+            }).then(() => { loadComments(currentPostId); }).catch(e => showToast(e.message));
         }
 
         // ---------------------------------------------------------
-        // 7. 交流大厅与聊天室
+        // 8. 聊天系统
         // ---------------------------------------------------------
         function loadChatHall() {
             document.getElementById('friend-list-container').innerHTML = '<div class="empty">加载好友中...</div>';
@@ -1366,49 +1228,24 @@
             });
         }
 
-        function showAddFriend() { 
-            var n = prompt('输入好友昵称:'); 
-            if(!n) return; 
-            fetch(apiUrl + '/friends', { method: 'POST', headers, body: JSON.stringify({ user_a: currentNickname, user_b: n }) })
-            .then(r => { if(r.ok) { showToast('添加成功'); loadChatHall(); } else showToast('已经是好友'); }); 
-        }
-
-        function showCreateGroup() { 
-            var n = prompt('群名称:'); 
-            if(!n) return; 
-            fetch(apiUrl + '/groups', { method: 'POST', headers, body: JSON.stringify({ name: n, owner: currentNickname }) })
-            .then(r=>r.json())
-            .then(d => { fetch(apiUrl + '/group_members', { method: 'POST', headers, body: JSON.stringify({ group_id: d[0].id, username: currentNickname }) }).then(() => { showToast('创建成功'); loadChatHall(); }); }); 
-        }
+        function showAddFriend() { var n = prompt('输入好友昵称:'); if(!n) return; fetch(apiUrl + '/friends', { method: 'POST', headers, body: JSON.stringify({ user_a: currentNickname, user_b: n }) }).then(r => { if(r.ok) { showToast('添加成功'); loadChatHall(); } else showToast('已经是好友'); }); }
+        function showCreateGroup() { var n = prompt('群名称:'); if(!n) return; fetch(apiUrl + '/groups', { method: 'POST', headers, body: JSON.stringify({ name: n, owner: currentNickname }) }).then(r=>r.json()).then(d => { fetch(apiUrl + '/group_members', { method: 'POST', headers, body: JSON.stringify({ group_id: d[0].id, username: currentNickname }) }).then(() => { showToast('创建成功'); loadChatHall(); }); }); }
 
         function openChatRoom(type, id, title) {
             currentChatType = type; currentChatId = String(id); lastMsgId = 0;
             document.getElementById('chat-title').innerText = title;
             document.getElementById('chat-messages-container').innerHTML = '<div class="empty">加载中...</div>';
-            
-            if (type === 'group') { document.getElementById('group-invite-btn').style.display = 'block'; } 
-            else { document.getElementById('group-invite-btn').style.display = 'none'; }
-            
-            navTo('chat-room'); 
-            fetchMessages(true);
-            
+            if (type === 'group') { document.getElementById('group-invite-btn').style.display = 'block'; } else { document.getElementById('group-invite-btn').style.display = 'none'; }
+            navTo('chat-room'); fetchMessages(true);
             if (chatTimer) clearInterval(chatTimer);
             chatTimer = setInterval(() => fetchMessages(false), 3000); 
         }
 
         function closeChatRoom() { if (chatTimer) clearInterval(chatTimer); navTo('chat'); }
-
-        function inviteToGroup() { 
-            var n = prompt('邀请谁进群？(输入昵称)'); 
-            if(!n) return; 
-            fetch(apiUrl + '/group_members', { method: 'POST', headers, body: JSON.stringify({ group_id: currentChatId, username: n }) }).then(r => { if(r.ok) { showToast('邀请成功'); } else showToast('已在群中'); }); 
-        }
+        function inviteToGroup() { var n = prompt('邀请谁进群？(输入昵称)'); if(!n) return; fetch(apiUrl + '/group_members', { method: 'POST', headers, body: JSON.stringify({ group_id: currentChatId, username: n }) }).then(r => { if(r.ok) { showToast('邀请成功'); } else showToast('已在群中'); }); }
 
         function fetchMessages(isFirst) {
-            var q = (currentChatType === 'private') 
-                ? `or=(and(sender.eq.${currentNickname},receiver_id.eq.${currentChatId}),and(sender.eq.${currentChatId},receiver_id.eq.${currentNickname}))&chat_type=eq.private` 
-                : `receiver_id=eq.${currentChatId}&chat_type=eq.group`;
-                
+            var q = (currentChatType === 'private') ? `or=(and(sender.eq.${currentNickname},receiver_id.eq.${currentChatId}),and(sender.eq.${currentChatId},receiver_id.eq.${currentNickname}))&chat_type=eq.private` : `receiver_id=eq.${currentChatId}&chat_type=eq.group`;
             fetch(apiUrl + `/messages?select=*&${q}&order=created_at.asc`, { headers }).then(r => r.json()).then(msgs => {
                 if (msgs.length === 0) { if(isFirst) document.getElementById('chat-messages-container').innerHTML = '<div class="empty">打个招呼吧</div>'; return; }
                 var newHtml = '';
@@ -1418,70 +1255,21 @@
                         var sender = currentChatType === 'group' ? `<div class="msg-sender">${m.sender}</div>` : '';
                         var content = m.msg_type === 'image' ? `<img src="${m.content}" class="msg-img">` : (m.msg_type === 'file' ? `<div class="msg-file"><div class="msg-file-icon">📄</div><div class="msg-file-info">${JSON.parse(m.content).name}</div></div>` : m.content);
                         var dbl = isSelf ? `ondblclick="recallMsg(${m.id})"` : '';
-                        
-                        newHtml += `<div class="msg-time">${ts}</div>
-                                    <div class="msg-row ${isSelf?'self':'other'}" ${dbl}>
-                                        <div style="display:flex;flex-direction:column;align-items:${isSelf?'flex-end':'flex-start'};">
-                                            ${sender}
-                                            <div class="msg-bubble">${content}</div>
-                                        </div>
-                                    </div>`;
+                        newHtml += `<div class="msg-time">${ts}</div><div class="msg-row ${isSelf?'self':'other'}" ${dbl}><div style="display:flex;flex-direction:column;align-items:${isSelf?'flex-end':'flex-start'};"><div class="msg-sender">${sender}</div><div class="msg-bubble">${content}</div></div></div>`;
                     }
                 });
-                if (newHtml) { 
-                    var box = document.getElementById('chat-messages-container'); 
-                    if(isFirst) box.innerHTML = ''; 
-                    box.innerHTML += newHtml; 
-                    box.scrollTop = box.scrollHeight; 
-                }
+                if (newHtml) { var box = document.getElementById('chat-messages-container'); if(isFirst) box.innerHTML = ''; box.innerHTML += newHtml; box.scrollTop = box.scrollHeight; }
             });
         }
 
-        function sendChatMsg() { 
-            if(isSendingMsg) return; 
-            var t = document.getElementById('chat-input').value.trim(); 
-            if(!t) return; 
-            isSendingMsg = true; 
-            document.getElementById('chat-send-btn').innerText = '...'; 
-            doSendMsg('text', t).then(() => { document.getElementById('chat-input').value = ''; }).finally(() => { isSendingMsg = false; document.getElementById('chat-send-btn').innerText = '发送'; }); 
-        }
-        
-        function uploadChatImage() { 
-            var i = document.getElementById('chat-image-uploader'); 
-            i.onchange = e => { 
-                var f = e.target.files[0]; if(!f) return; 
-                var r = new FileReader(); 
-                r.onload = ev => doSendMsg('image', ev.target.result); 
-                r.readAsDataURL(f); 
-            }; 
-            i.click(); 
-        }
-        
-        function uploadChatFile() { 
-            var i = document.getElementById('chat-file-uploader'); 
-            i.onchange = e => { 
-                var f = e.target.files[0]; if(!f) return; 
-                var r = new FileReader(); 
-                r.onload = ev => doSendMsg('file', JSON.stringify({ name: f.name, data: ev.target.result })); 
-                r.readAsDataURL(f); 
-            }; 
-            i.click(); 
-        }
-        
-        function doSendMsg(type, c) { 
-            return fetch(apiUrl + '/messages', { 
-                method: 'POST', headers, 
-                body: JSON.stringify({ sender: currentNickname, receiver_id: currentChatId, chat_type: currentChatType, msg_type: type, content: c }) 
-            }).then(r => { if(r.ok) fetchMessages(false); }); 
-        }
-        
-        function recallMsg(id) { 
-            if(!confirm('撤回？')) return; 
-            fetch(apiUrl + '/messages?id=eq.' + id, { method: 'DELETE', headers }).then(r => { if(r.ok) { lastMsgId=0; document.getElementById('chat-messages-container').innerHTML=''; fetchMessages(true); } }); 
-        }
+        function sendChatMsg() { if(isSendingMsg) return; var t = document.getElementById('chat-input').value.trim(); if(!t) return; isSendingMsg = true; document.getElementById('chat-send-btn').innerText = '...'; doSendMsg('text', t).then(() => { document.getElementById('chat-input').value = ''; }).finally(() => { isSendingMsg = false; document.getElementById('chat-send-btn').innerText = '发送'; }); }
+        function uploadChatImage() { var i = document.getElementById('chat-image-uploader'); i.onchange = e => { var f = e.target.files[0]; if(!f) return; var r = new FileReader(); r.onload = ev => doSendMsg('image', ev.target.result); r.readAsDataURL(f); }; i.click(); }
+        function uploadChatFile() { var i = document.getElementById('chat-file-uploader'); i.onchange = e => { var f = e.target.files[0]; if(!f) return; var r = new FileReader(); r.onload = ev => doSendMsg('file', JSON.stringify({ name: f.name, data: ev.target.result })); r.readAsDataURL(f); }; i.click(); }
+        function doSendMsg(type, c) { return fetch(apiUrl + '/messages', { method: 'POST', headers, body: JSON.stringify({ sender: currentNickname, receiver_id: currentChatId, chat_type: currentChatType, msg_type: type, content: c }) }).then(r => { if(r.ok) fetchMessages(false); }); }
+        function recallMsg(id) { if(!confirm('撤回？')) return; fetch(apiUrl + '/messages?id=eq.' + id, { method: 'DELETE', headers }).then(r => { if(r.ok) { lastMsgId=0; document.getElementById('chat-messages-container').innerHTML=''; fetchMessages(true); } }); }
 
         // ---------------------------------------------------------
-        // 8. 微信级通知系统
+        // 9. 微信级通知
         // ---------------------------------------------------------
         function startNotificationPolling() {
             if(!currentNickname) return;
@@ -1491,15 +1279,10 @@
 
         function checkNewNotifications() {
             if(!currentNickname) return;
-            
-            fetch(apiUrl + `/messages?receiver_id=eq.${currentNickname}&sender=neq.${currentNickname}&order=created_at.desc&limit=1`, { headers })
-            .then(r => r.json())
-            .then(msgs => {
+            fetch(apiUrl + `/messages?receiver_id=eq.${currentNickname}&sender=neq.${currentNickname}&order=created_at.desc&limit=1`, { headers }).then(r => r.json()).then(msgs => {
                 if (msgs.length > 0) {
                     var lastMsgTime = new Date(msgs[0].created_at).getTime();
                     var now = new Date().getTime();
-                    
-                    // 过去 1 分钟内有新消息，且不在聊天室内
                     if (now - lastMsgTime < 60000 && !document.getElementById('page-chat-room').classList.contains('active')) {
                         document.getElementById('chat-red-dot').style.display = 'block';
                         showToast(`收到新消息来自: ${msgs[0].sender}`);
