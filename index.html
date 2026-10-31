@@ -2,16 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>马列毛学习交流社区</title>
     
-    <!-- ==========================================================================
-         全局 CSS 样式区域
-         ========================================================================== -->
     <style>
-        /* ---------------------------------------------------------
-           1. 核心色彩变量与主题系统
-           --------------------------------------------------------- */
+        /* 全局变量 */
         :root {
             --bg-color: #f5f5f5;
             --card-bg: #ffffff;
@@ -22,11 +17,8 @@
             --input-bg: #f9f9f9;
             
             --primary-color: #8b0000; 
-            --primary-hover: #a52a2a;
-            
             --like-color: #ff4757;    
             --coin-color: #f5a623;    
-            --forward-color: #2ed573; 
             --notify-color: #ff3b30;  
             
             --self-msg-bg: #8b0000;
@@ -44,351 +36,84 @@
             --text-light: #777777;
             --border-color: #333333;
             --input-bg: #2a2a2a;
-            
             --primary-color: #c62828;
-            --primary-hover: #b71c1c;
-            
             --self-msg-bg: #c62828;
-            --self-msg-text: #ffffff;
             --other-msg-bg: #333333;
-            --other-msg-text: #e0e0e0;
             --chat-bg: #121212;
         }
 
-        /* ---------------------------------------------------------
-           2. 基础重置与排版规范
-           --------------------------------------------------------- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 65px;
-            font-size: 15px;
-            line-height: 1.5;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .page { display: none; min-height: calc(100vh - 65px); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-size: 15px; line-height: 1.5; transition: background-color 0.3s, color 0.3s; }
+        
+        .page { display: none; min-height: calc(100vh - 65px); padding-bottom: 65px; }
         .page.active { display: block; }
-
-        .page.fixed-page { display: none; flex-direction: column; height: calc(100vh - 65px); overflow: hidden; }
+        
+        /* 聊天室专用，防止键盘顶起 */
+        .page.fixed-page { display: none; flex-direction: column; height: 100vh; overflow: hidden; padding-bottom: 0; }
         .page.fixed-page.active { display: flex; }
 
-        /* ---------------------------------------------------------
-           3. 顶部与底部导航栏
-           --------------------------------------------------------- */
-        .header {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-        .header .back {
-            position: absolute;
-            left: 15px;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 5px;
-        }
-        .header .right-btn {
-            position: absolute;
-            right: 15px;
-            font-size: 14px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-weight: normal;
-        }
+        /* 顶部导航 */
+        .header { background-color: var(--primary-color); color: #ffffff; padding: 15px; font-size: 18px; font-weight: bold; text-align: center; position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .header .back { position: absolute; left: 15px; font-size: 16px; cursor: pointer; padding: 5px; }
+        .header .right-btn { position: absolute; right: 15px; font-size: 14px; cursor: pointer; background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 16px; }
 
-        .bottom-bar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 65px;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            z-index: 999;
-            justify-content: space-around;
-            transition: background-color 0.3s;
-        }
-        .tab {
-            flex: 1;
-            text-align: center;
-            line-height: 65px;
-            color: var(--text-light);
-            font-size: 15px;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s;
-        }
+        /* 底部导航 */
+        .bottom-bar { display: none; position: fixed; bottom: 0; width: 100%; height: 65px; background-color: var(--card-bg); border-top: 1px solid var(--border-color); z-index: 999; justify-content: space-around; }
+        .tab { flex: 1; text-align: center; line-height: 65px; color: var(--text-light); font-size: 15px; cursor: pointer; position: relative; }
         .tab.active { color: var(--primary-color); font-weight: bold; }
+        .red-dot { position: absolute; top: 16px; right: 20%; width: 10px; height: 10px; background-color: var(--notify-color); border-radius: 50%; display: none; }
 
-        .red-dot {
-            position: absolute;
-            top: 16px;
-            right: 20%;
-            width: 10px;
-            height: 10px;
-            background-color: var(--notify-color);
-            border-radius: 50%;
-            display: none;
-            box-shadow: 0 0 4px rgba(255, 59, 48, 0.8);
-        }
-
-        /* ---------------------------------------------------------
-           4. 开场动画
-           --------------------------------------------------------- */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: #080808;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1.5s ease;
-            box-shadow: inset 0 0 150px rgba(0,0,0,1);
-        }
-        .splash-text {
-            font-family: "STSong", "SimSun", serif;
-            font-size: 32px;
-            font-weight: 900;
-            color: #8c1212;
-            letter-spacing: 8px;
-            text-align: center;
-            line-height: 1.8;
-            opacity: 0;
-            filter: blur(4px);
-            transform: scale(1.05);
-        }
+        /* 开场动画 */
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #080808; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1.5s ease; }
+        .splash-text { font-family: "STSong", "SimSun", serif; font-size: 32px; font-weight: 900; color: #8c1212; letter-spacing: 8px; text-align: center; line-height: 1.8; opacity: 0; filter: blur(4px); transform: scale(1.05); }
         .line1 { animation: heavyReveal 3s 1s forwards; }
         .line2 { margin-top: 30px; animation: heavyReveal 3s 5s forwards, subtleTremor 0.15s linear 8s 3; }
-        .fade-out-effect { animation: ashDissolve 1.5s ease-in forwards !important; }
+        @keyframes heavyReveal { 0% { opacity: 0; filter: blur(8px); transform: scale(1.1) translateY(10px); } 100% { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); text-shadow: 0 0 10px rgba(139,0,0,0.8); } }
+        @keyframes subtleTremor { 0% { transform: translate(0, 0); } 25% { transform: translate(1px, -1px); } 50% { transform: translate(-1px, 1px); } 75% { transform: translate(1px, 1px); } 100% { transform: translate(0, 0); } }
+        @keyframes ashDissolve { 0% { opacity: 1; filter: blur(0); transform: scale(1); } 100% { opacity: 0; filter: blur(15px); transform: scale(1.1) translateY(-20px); } }
 
-        @keyframes heavyReveal {
-            0% { opacity: 0; filter: blur(8px); transform: scale(1.1) translateY(10px); }
-            100% { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); text-shadow: 0 0 10px rgba(139,0,0,0.8); }
-        }
-        @keyframes subtleTremor {
-            0% { transform: translate(0, 0); } 25% { transform: translate(1px, -1px); }
-            50% { transform: translate(-1px, 1px); } 75% { transform: translate(1px, 1px); }
-            100% { transform: translate(0, 0); }
-        }
-        @keyframes ashDissolve {
-            0% { opacity: 1; filter: blur(0); transform: scale(1); }
-            100% { opacity: 0; filter: blur(15px); transform: scale(1.1) translateY(-20px); }
-        }
+        /* 轻提示 */
+        #toast-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-size: 15px; z-index: 999999; display: none; text-align: center; pointer-events: none; }
 
-        /* ---------------------------------------------------------
-           5. 全局轻提示 Toast
-           --------------------------------------------------------- */
-        #toast-msg {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.85);
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 15px;
-            z-index: 999999;
-            display: none;
-            text-align: center;
-            pointer-events: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        /* ---------------------------------------------------------
-           6. 登录注册页
-           --------------------------------------------------------- */
-        #page-auth {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: var(--bg-color);
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            padding: 40px 20px;
-        }
+        /* 登录页 */
+        #page-auth { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-color); z-index: 9999; display: none; flex-direction: column; padding: 40px 20px; }
         #page-auth.active { display: flex; }
+        .auth-logo { font-size: 26px; font-weight: 900; color: var(--primary-color); text-align: center; margin-bottom: 40px; margin-top: 30px; }
+        .auth-tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid var(--border-color); }
+        .auth-tab { flex: 1; text-align: center; padding: 12px; font-size: 18px; font-weight: bold; color: var(--text-light); cursor: pointer; }
+        .auth-tab.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); margin-bottom: -2px; }
+        .auth-input { width: 100%; border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; font-size: 16px; margin-bottom: 20px; outline: none; background-color: var(--input-bg); color: var(--text-main); }
+        .auth-btn { width: 100%; background-color: var(--primary-color); color: #ffffff; border: none; padding: 16px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
 
-        .auth-logo {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 40px;
-            margin-top: 30px;
-            letter-spacing: 2px;
-        }
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-        }
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-        .auth-tab.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            margin-bottom: -2px;
-        }
-        .auth-input {
-            width: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            outline: none;
-            background-color: var(--input-bg);
-            color: var(--text-main);
-        }
-        .auth-btn {
-            width: 100%;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(139,0,0,0.25);
-        }
+        /* 个人主页 */
+        .home-top-section { position: relative; height: 320px; background: linear-gradient(135deg, #444, #111); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 -100px 100px -20px rgba(0,0,0,0.8); }
+        .home-avatar { width: 100px; height: 100px; background-color: #ddd; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.4); background-size: cover; background-position: center; margin-bottom: 15px; }
+        .home-name { font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); display: flex; align-items: center; }
+        .admin-badge { background-color: #ffd700; color: #8b0000; font-size: 12px; padding: 2px 8px; border-radius: 12px; margin-left: 10px; font-weight: bold; }
+        .home-signature { font-size: 14px; color: #ddd; margin-top: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); padding: 0 20px; text-align: center; }
+        .home-stats-bar { display: flex; gap: 15px; margin-top: 15px; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .home-stat-item { color: #fff; font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
-        /* ---------------------------------------------------------
-           7. 个人主页
-           --------------------------------------------------------- */
-        .home-top-section {
-            position: relative;
-            height: 320px;
-            background: linear-gradient(135deg, #444, #111);
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 0 -100px 100px -20px rgba(0,0,0,0.8);
-        }
-        .home-avatar {
-            width: 100px; height: 100px;
-            background-color: #dddddd;
-            border-radius: 50%;
-            border: 4px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 15px;
-        }
-        .home-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-        }
-        .admin-badge {
-            background-color: #ffd700;
-            color: #8b0000;
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 10px;
-            font-weight: bold;
-        }
-        .home-signature {
-            font-size: 14px;
-            color: #dddddd;
-            margin-top: 10px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            padding: 0 20px;
-            text-align: center;
-        }
-        .home-stats-bar {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .home-stat-item {
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
+        /* 通用列表与卡片 */
         .list { padding: 12px; }
-        .card {
-            background-color: var(--card-bg);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-        }
+        .card { background-color: var(--card-bg); padding: 16px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
         .card-arrow { color: var(--text-light); font-size: 20px; }
+        
+        .post-card { display: block; position: relative; }
+        .card-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: var(--text-main); line-height: 1.4; }
+        .card-desc { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .card-meta { font-size: 13px; color: var(--text-light); display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        
+        /* 重点：数据展示标签 */
+        .card-stats { display: flex; gap: 8px; }
+        .card-stats span { font-size: 12px; background: var(--bg-color); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-sub); }
 
-        /* ---------------------------------------------------------
-           8. 设置页
-           --------------------------------------------------------- */
-        .settings-group {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            margin: 15px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-        .settings-item {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            cursor: pointer;
-            color: var(--text-main);
-        }
+        .delete-btn { position: absolute; right: 15px; top: 15px; background-color: #ffeeee; color: #d32f2f; border: 1px solid #ffcccc; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; z-index: 2; }
+        .post-thumb { width: 75px; height: 75px; border-radius: 8px; object-fit: cover; margin-left: 15px; background-color: var(--border-color); }
+
+        /* 设置页 */
+        .settings-group { background-color: var(--card-bg); border-radius: 12px; margin: 15px; overflow: hidden; border: 1px solid var(--border-color); }
+        .settings-item { padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-main); }
         .settings-item:last-child { border-bottom: none; }
         .settings-item.danger { color: #d32f2f; justify-content: center; font-weight: bold; }
         
@@ -399,100 +124,74 @@
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* ---------------------------------------------------------
-           9. 看帖页与发帖页
-           --------------------------------------------------------- */
+        /* 看帖页 */
         .cat-bar { display: flex; background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); }
         .cat-item { flex: 1; text-align: center; padding: 14px; font-weight: bold; color: var(--text-sub); cursor: pointer; font-size: 16px; }
         .cat-item.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
-        
         .search-sort-bar { display: flex; background-color: var(--card-bg); padding: 12px; border-bottom: 1px solid var(--border-color); gap: 12px; }
         .search-input { flex: 1; border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 16px; font-size: 14px; outline: none; background-color: var(--input-bg); color: var(--text-main); }
         .sort-select { border: 1px solid var(--border-color); border-radius: 20px; padding: 10px; font-size: 14px; outline: none; background-color: var(--input-bg); color: var(--text-main); }
 
-        .post-card { display: block; position: relative; }
-        .card-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: var(--text-main); line-height: 1.4; }
-        .card-desc { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .card-meta { font-size: 13px; color: var(--text-light); display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-        
-        /* 重点：数据展示 */
-        .card-stats { display: flex; gap: 10px; }
-        .card-stats span { font-size: 12px; background: var(--bg-color); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border-color); }
-
-        .delete-btn { position: absolute; right: 15px; top: 15px; background-color: #ffeeee; color: #d32f2f; border: 1px solid #ffcccc; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; z-index: 2; }
-        .post-thumb { width: 75px; height: 75px; border-radius: 8px; object-fit: cover; margin-left: 15px; background-color: var(--border-color); }
-
+        /* 发帖页 */
         .form-group { background-color: var(--card-bg); padding: 20px; margin-bottom: 10px; }
-        input, textarea, select { width: 100%; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; font-size: 15px; margin-top: 10px; background-color: var(--input-bg); color: var(--text-main); outline: none; }
+        input, textarea, select { width: 100%; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; font-size: 16px; margin-top: 10px; background-color: var(--input-bg); color: var(--text-main); outline: none; }
         textarea { height: 140px; resize: none; }
         .btn { width: 100%; background-color: var(--primary-color); color: #ffffff; border: none; padding: 15px; border-radius: 8px; font-size: 16px; margin-top: 20px; font-weight: bold; cursor: pointer; }
-        
         .add-media-btn { display: inline-flex; align-items: center; background-color: var(--input-bg); color: var(--text-sub); padding: 10px 16px; border-radius: 8px; font-size: 14px; margin-top: 15px; cursor: pointer; border: 1px solid var(--border-color); gap: 6px; }
         .preview-container { position: relative; display: inline-block; margin-top: 10px; }
         .preview-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; display: none; border: 1px solid var(--border-color); }
         .remove-media-btn { position: absolute; top: -8px; right: -8px; background-color: #d32f2f; color: white; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 20px; font-size: 14px; cursor: pointer; display: none; }
 
-        /* ---------------------------------------------------------
-           10. 详情页与 B站 互动栏
-           --------------------------------------------------------- */
-        #page-detail { background-color: var(--bg-color); background-image: radial-gradient(var(--border-color) 1px, transparent 1px); background-size: 20px 20px; }
+        /* 详情页 B 站互动 */
+        #page-detail { background-color: var(--bg-color); padding-bottom: 140px; }
         .detail-box { background-color: var(--card-bg); padding: 25px; margin: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .detail-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; color: var(--text-main); }
+        .detail-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; }
         .detail-meta { font-size: 13px; color: var(--text-light); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
-        .detail-content { font-size: 16px; line-height: 1.8; margin-bottom: 25px; color: var(--text-main); word-wrap: break-word; }
+        .detail-content { font-size: 16px; line-height: 1.8; margin-bottom: 25px; word-wrap: break-word; }
         .detail-img { width: 100%; border-radius: 8px; margin-bottom: 15px; display: block; }
-
         .bili-action-bar { display: flex; justify-content: space-around; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
         .bili-btn { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 13px; cursor: pointer; gap: 5px; }
         .bili-btn.active { color: var(--primary-color); }
         .bili-btn.active.coin { color: var(--coin-color); }
         .bili-icon { font-size: 24px; }
-        .bili-count { font-weight: bold; }
 
-        /* ---------------------------------------------------------
-           11. 评论区
-           --------------------------------------------------------- */
+        /* 评论区 */
         .comment-section-title { padding: 15px; font-weight: bold; font-size: 16px; margin: 0 15px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
         .comment-wrapper { background-color: var(--card-bg); padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; }
-        .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: var(--primary-color); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
-        .comment-body { flex: 1; }
+        .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
         .comment-author { font-size: 14px; color: var(--text-sub); font-weight: bold; margin-bottom: 4px; }
-        .comment-text { font-size: 15px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px; }
+        .comment-text { font-size: 15px; line-height: 1.5; margin-bottom: 8px; }
         .comment-text .at-user { color: var(--primary-color); font-weight: bold; }
         .comment-actions { display: flex; gap: 15px; font-size: 12px; color: var(--text-light); }
         .comment-action-btn { cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .comment-action-btn.liked { color: var(--like-color); }
-
         .sub-comments { background: var(--bg-color); border-radius: 8px; padding: 10px; margin-top: 10px; }
         .sub-comment-item { border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px; font-size: 14px; line-height: 1.4; }
         .sub-comment-item:last-child { border: none; margin: 0; padding: 0; }
         .sub-author { color: var(--primary-color); font-weight: bold; }
 
-        .comment-input-area { margin: 15px; display: flex; gap: 10px; background: var(--card-bg); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); }
-        .comment-input-area input { margin-top: 0; flex: 1; border-radius: 20px; }
+        /* 🔥 修复打字“一行一个字”：使用 fixed 固定在底部，并给 body 留出足够空间 */
+        .comment-input-area { position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px 15px; background: var(--card-bg); border-top: 1px solid var(--border-color); display: flex; gap: 10px; z-index: 999; padding-bottom: env(safe-area-inset-bottom); }
+        .comment-input-area input { margin-top: 0; flex: 1; border-radius: 20px; font-size: 16px; } /* 16px 防止 iOS 缩放 */
         .comment-input-area button { width: auto; padding: 0 20px; margin-top: 0; border-radius: 20px; }
 
-        /* ---------------------------------------------------------
-           12. 聊天室
-           --------------------------------------------------------- */
+        /* 聊天系统 */
         .chat-section-title { padding: 15px 20px 5px 20px; font-weight: bold; color: var(--text-light); font-size: 13px; }
         .chat-container { flex: 1; overflow-y: auto; padding: 15px; background-color: var(--chat-bg); display: flex; flex-direction: column; }
-        
         .msg-row { display: flex; margin-bottom: 20px; align-items: flex-start; }
         .msg-row.self { flex-direction: row-reverse; }
         .msg-bubble { max-width: 75%; padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.5; word-break: break-all; position: relative; }
         .msg-row.other .msg-bubble { background-color: var(--other-msg-bg); color: var(--other-msg-text); border-top-left-radius: 4px; margin-left: 12px; }
         .msg-row.self .msg-bubble { background-color: var(--self-msg-bg); color: var(--self-msg-text); border-top-right-radius: 4px; margin-right: 12px; }
-
         .msg-sender { font-size: 12px; color: var(--text-light); margin-bottom: 4px; text-align: left; }
         .msg-row.self .msg-sender { text-align: right; }
         .msg-time { font-size: 11px; color: var(--text-light); text-align: center; margin: 15px 0; }
         .msg-img { max-width: 100%; border-radius: 8px; margin-top: 5px; display: block; }
         .msg-file { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 8px; margin-top: 5px; }
-
-        .chat-input-bar { display: flex; padding: 10px 15px; background-color: var(--card-bg); border-top: 1px solid var(--border-color); align-items: center; gap: 12px; flex-shrink: 0; }
-        .chat-input { flex: 1; margin: 0; border-radius: 20px; padding: 12px 18px; background-color: var(--input-bg); border: 1px solid var(--border-color); }
-        .chat-send-btn { background-color: var(--primary-color); color: #ffffff; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        
+        /* 🔥 聊天输入框防挤压 */
+        .chat-input-bar { display: flex; padding: 10px 15px; background-color: var(--card-bg); border-top: 1px solid var(--border-color); align-items: center; gap: 12px; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom); }
+        .chat-input { flex: 1; margin: 0; border-radius: 20px; padding: 12px 18px; background-color: var(--input-bg); font-size: 16px; }
+        .chat-send-btn { background-color: var(--primary-color); color: #fff; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
         .upload-icon { font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px; }
 
         .empty { text-align: center; color: var(--text-light); padding: 50px 0; font-size: 15px; }
@@ -550,6 +249,9 @@
     <div id="page-settings" class="page">
         <div class="header"><span class="back" onclick="navTo('home')">‹ 返回</span> 个人设置</div>
         <div class="settings-group">
+            <div class="settings-item" onclick="showRedeemCode()"><span>🎁 兑换码 / 升级管理员</span><span class="card-arrow">›</span></div>
+        </div>
+        <div class="settings-group">
             <div class="settings-item" onclick="uploadImage('avatar')"><span>更换头像</span><span class="card-arrow">›</span></div>
             <div class="settings-item" onclick="uploadImage('cover')"><span>更换主页背景</span><span class="card-arrow">›</span></div>
             <div class="settings-item" onclick="changeSignature()"><span>修改个性签名</span><span class="card-arrow">›</span></div>
@@ -592,6 +294,8 @@
             <span id="cancel-reply-btn" style="display:none; color:var(--primary-color); cursor:pointer;" onclick="cancelReply()">取消回复</span>
         </div>
         <div id="comment-container"></div>
+        
+        <!-- 底部输入框绝对固定 -->
         <div class="comment-input-area">
             <input type="text" id="comment-content" placeholder="写下你的回复...">
             <button class="btn" onclick="submitComment()">发送</button>
@@ -642,6 +346,8 @@
             <div class="right-btn" id="group-invite-btn" style="display:none;" onclick="inviteToGroup()">邀请</div>
         </div>
         <div class="chat-container" id="chat-messages-container"></div>
+        
+        <!-- 聊天输入框 -->
         <div class="chat-input-bar">
             <div class="upload-icon" onclick="uploadChatImage()">🖼️</div>
             <div class="upload-icon" onclick="uploadChatFile()">📁</div>
@@ -666,34 +372,21 @@
     </div>
 
     <script>
-        // ---------------------------------------------------------
-        // 1. 系统初始化与配置
-        // ---------------------------------------------------------
+        // 初始化与动画
         var splashTimer = setTimeout(endSplash, 9000);
-
         function endSplash() {
             clearTimeout(splashTimer);
             var splash = document.getElementById('splash-screen');
             if (!splash || splash.style.display === 'none') return;
-            
-            document.querySelectorAll('.splash-text').forEach(e => {
-                e.style.animation = 'ashDissolve 1.5s ease-in forwards';
-            });
-            
+            document.querySelectorAll('.splash-text').forEach(e => { e.style.animation = 'ashDissolve 1.5s ease-in forwards'; });
             setTimeout(() => {
                 splash.style.opacity = '0';
-                setTimeout(() => { 
-                    splash.style.display = 'none'; 
-                    checkLoginStatus(); 
-                    startNotificationPolling(); 
-                }, 1500);
+                setTimeout(() => { splash.style.display = 'none'; checkLoginStatus(); startNotificationPolling(); }, 1500);
             }, 500);
         }
 
         function showToast(msg) {
-            var t = document.getElementById('toast-msg');
-            t.innerText = msg;
-            t.style.display = 'block';
+            var t = document.getElementById('toast-msg'); t.innerText = msg; t.style.display = 'block';
             setTimeout(() => { t.style.display = 'none'; }, 2500);
         }
 
@@ -701,8 +394,7 @@
         var headers = { 
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5b2VjeXp6bHZzZ2ZyZ3F2anlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MjIxNTMsImV4cCI6MjEwODk5ODE1M30.rS9n9N6O7A0OvLDnSWbXf_N8N2Iz0c_CsixwI6PPRyQ', 
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5b2VjeXp6bHZzZ2ZyZ3F2anlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MjIxNTMsImV4cCI6MjEwODk5ODE1M30.rS9n9N6O7A0OvLDnSWbXf_N8N2Iz0c_CsixwI6PPRyQ', 
-            'Content-Type': 'application/json', 
-            'Prefer': 'return=representation' 
+            'Content-Type': 'application/json', 'Prefer': 'return=representation' 
         };
 
         var currentNickname = '', isAdmin = false, authMode = 'login';
@@ -718,14 +410,9 @@
         var rbg = localStorage.getItem('read_bg');
         if (rbg) { document.getElementById('page-detail').style.backgroundImage = `url(${rbg})`; document.getElementById('page-detail').style.backgroundSize = 'cover'; }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode'); 
-            localStorage.setItem('dark_mode', document.body.classList.contains('dark-mode'));
-        }
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); localStorage.setItem('dark_mode', document.body.classList.contains('dark-mode')); }
 
-        // ---------------------------------------------------------
-        // 2. 账号系统
-        // ---------------------------------------------------------
+        // 账号系统
         function switchAuthMode(m) {
             authMode = m;
             document.getElementById('tab-login').classList.toggle('active', m === 'login');
@@ -737,9 +424,7 @@
             var n = localStorage.getItem('nickname');
             if (n) {
                 currentNickname = n;
-                fetch(apiUrl + '/users?nickname=eq.' + n, { headers })
-                .then(r => r.json())
-                .then(d => {
+                fetch(apiUrl + '/users?nickname=eq.' + n, { headers }).then(r => r.json()).then(d => {
                     if (d.length > 0) {
                         isAdmin = d[0].is_admin;
                         document.getElementById('home-signature').innerText = d[0].signature || '这家伙很懒';
@@ -762,24 +447,15 @@
             var btn = document.getElementById('auth-submit-btn'); btn.disabled = true;
 
             if (authMode === 'register') {
-                fetch(apiUrl + '/users?nickname=eq.' + n, { headers })
-                .then(r => r.json())
-                .then(d => {
+                fetch(apiUrl + '/users?nickname=eq.' + n, { headers }).then(r => r.json()).then(d => {
                     if (d.length > 0) throw new Error('昵称已存在');
                     return fetch(apiUrl + '/users', { method: 'POST', headers, body: JSON.stringify({ nickname: n, password: p, coins: 0 }) });
-                })
-                .then(() => { showToast('注册成功'); switchAuthMode('login'); })
-                .catch(e => showToast(e.message))
-                .finally(() => btn.disabled = false);
+                }).then(() => { showToast('注册成功'); switchAuthMode('login'); }).catch(e => showToast(e.message)).finally(() => btn.disabled = false);
             } else {
-                fetch(apiUrl + `/users?nickname=eq.${n}&password=eq.${p}`, { headers })
-                .then(r => r.json())
-                .then(d => {
+                fetch(apiUrl + `/users?nickname=eq.${n}&password=eq.${p}`, { headers }).then(r => r.json()).then(d => {
                     if (d.length === 0) throw new Error('账号或密码错误');
                     currentNickname = n; isAdmin = d[0].is_admin; localStorage.setItem('nickname', n); enterApp();
-                })
-                .catch(e => showToast(e.message))
-                .finally(() => btn.disabled = false);
+                }).catch(e => showToast(e.message)).finally(() => btn.disabled = false);
             }
         }
 
@@ -787,10 +463,7 @@
             document.getElementById('page-auth').classList.remove('active');
             document.getElementById('bottom-bar').style.display = 'flex';
             document.getElementById('home-nickname').innerText = currentNickname;
-            if (isAdmin) { 
-                document.getElementById('admin-badge').style.display = 'inline-block'; 
-                document.getElementById('notice-option').style.display = 'block'; 
-            }
+            if (isAdmin) { document.getElementById('admin-badge').style.display = 'inline-block'; document.getElementById('notice-option').style.display = 'block'; }
             var av = localStorage.getItem('avatar_' + currentNickname); if (av) document.getElementById('home-avatar').style.backgroundImage = `url(${av})`;
             var cv = localStorage.getItem('cover_' + currentNickname); if (cv) document.getElementById('home-cover').style.backgroundImage = `url(${cv})`;
             loadTotalLikes();
@@ -800,14 +473,31 @@
         function logout() { if (confirm('退出登录？')) { localStorage.removeItem('nickname'); location.reload(); } }
         function deleteAccount() { if (confirm('注销账号？')) { fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'DELETE', headers }).then(() => { localStorage.clear(); location.reload(); }); } }
 
-        // ---------------------------------------------------------
-        // 3. 用户个人数据与设置
-        // ---------------------------------------------------------
+        // 🔥 兑换码
+        function showRedeemCode() {
+            if (isAdmin) return showToast('你已经是管理员了。');
+            var code = prompt('请输入兑换码激活特权：');
+            if (!code) return;
+            if (code === '人民万岁，世界人民大团结' || code === '雪松大大非常屌') {
+                fetch(apiUrl + '/users?nickname=eq.' + currentNickname, {
+                    method: 'PATCH', headers, body: JSON.stringify({ is_admin: true })
+                }).then(res => {
+                    if(res.ok) {
+                        isAdmin = true;
+                        document.getElementById('admin-badge').style.display = 'inline-block';
+                        document.getElementById('notice-option').style.display = 'block';
+                        showToast('兑换成功！您已永久获得管理员权限。');
+                    }
+                });
+            } else {
+                showToast('兑换码无效！');
+            }
+        }
+
+        // 签到与个人设置
         function loadTotalLikes() {
-            fetch(apiUrl + `/posts?author=eq.${currentNickname}&select=likes_count`, { headers })
-            .then(r => r.json())
-            .then(posts => {
-                myTotalLikes = posts.reduce((sum, p) => sum + (p.likes_count || 0), 0);
+            fetch(apiUrl + `/posts?author=eq.${currentNickname}&select=likes_count`, { headers }).then(r => r.json()).then(posts => {
+                myTotalLikes = posts.reduce((sum, p) => sum + (parseInt(p.likes_count) || 0), 0);
                 document.getElementById('home-total-likes').innerText = `❤️ ${myTotalLikes} 获赞`;
             });
         }
@@ -815,8 +505,7 @@
         function doCheckIn() {
             var today = new Date().toDateString();
             if (myLastCheckin === today) return showToast('今天已经签到过了');
-            fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ coins: myCoins + 1, last_checkin: today }) })
-            .then(res => { if(res.ok) { myCoins++; myLastCheckin = today; document.getElementById('home-coins').innerText = `🪙 ${myCoins}`; showToast('签到成功！获得 1 硬币'); } });
+            fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ coins: myCoins + 1, last_checkin: today }) }).then(res => { if(res.ok) { myCoins++; myLastCheckin = today; document.getElementById('home-coins').innerText = `🪙 ${myCoins}`; showToast('签到成功！获得 1 硬币'); } });
         }
 
         function changeSignature() {
@@ -851,9 +540,7 @@
             }; input.click();
         }
 
-        // ---------------------------------------------------------
-        // 4. 页面路由与帖子列表
-        // ---------------------------------------------------------
+        // 路由与列表
         function navTo(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
@@ -863,10 +550,8 @@
             if (id === 'list') { 
                 document.querySelectorAll('.tab')[1].classList.add('active'); 
                 if (currentListMode === 'board') { 
-                    document.getElementById('cat-bar').style.display = 'flex'; 
-                    document.getElementById('search-bar').style.display = 'flex'; 
-                    document.getElementById('list-header').innerText = '学习交流社区'; 
-                    loadPosts(); 
+                    document.getElementById('cat-bar').style.display = 'flex'; document.getElementById('search-bar').style.display = 'flex'; 
+                    document.getElementById('list-header').innerText = '学习交流社区'; loadPosts(); 
                 } 
             }
             if (id === 'chat') { document.querySelectorAll('.tab')[2].classList.add('active'); loadChatHall(); document.getElementById('chat-red-dot').style.display = 'none'; }
@@ -912,12 +597,17 @@
                 var del = (isAdmin || p.author === currentNickname) ? `<div class="delete-btn" onclick="deletePost(event,${p.id})">删除</div>` : '';
                 var thumb = p.image_url ? `<img src="${p.image_url}" class="post-thumb">` : '';
                 
-                // 重点修复：展示点赞、投币、收藏、转发数
+                // 🔥 重点修复：使用 parseInt 强制转换数字，防止字符串拼接
+                var likes = parseInt(p.likes_count) || 0;
+                var coins = parseInt(p.coins_received) || 0;
+                var favs = parseInt(p.favorites_count) || 0;
+                var fwds = parseInt(p.forwards_count) || 0;
+
                 var statsHtml = `<div class="card-stats">
-                    <span>👍 ${p.likes_count||0}</span>
-                    <span>🪙 ${p.coins_received||0}</span>
-                    <span>⭐ ${p.favorites_count||0}</span>
-                    <span>↗️ ${p.forwards_count||0}</span>
+                    <span>👍 ${likes}</span>
+                    <span>🪙 ${coins}</span>
+                    <span>⭐ ${favs}</span>
+                    <span>↗️ ${fwds}</span>
                 </div>`;
 
                 html += `<div class="card post-card" onclick="openDetail(${p.id})">${del}
@@ -934,26 +624,15 @@
             document.getElementById('post-list-container').innerHTML = html;
         }
 
-        function switchCategory(c, el) { 
-            currentCategory = c; currentListMode = 'board'; 
-            document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active')); 
-            el.classList.add('active'); loadPosts(); 
-        }
+        function switchCategory(c, el) { currentCategory = c; currentListMode = 'board'; document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active')); el.classList.add('active'); loadPosts(); }
+        function deletePost(e, id) { e.stopPropagation(); if (confirm('删帖？')) fetch(apiUrl + '/posts?id=eq.' + id, { method: 'DELETE', headers }).then(() => currentListMode === 'my' ? loadMyPosts() : loadPosts()); }
 
-        function deletePost(e, id) { 
-            e.stopPropagation(); if (confirm('删帖？')) fetch(apiUrl + '/posts?id=eq.' + id, { method: 'DELETE', headers }).then(() => currentListMode === 'my' ? loadMyPosts() : loadPosts()); 
-        }
-
-        // ---------------------------------------------------------
-        // 5. 发帖逻辑
-        // ---------------------------------------------------------
+        // 发帖
         function uploadPostImage() {
             var input = document.getElementById('post-image-uploader');
             input.onchange = e => {
                 var f = e.target.files[0]; if (!f) return;
-                var r = new FileReader(); 
-                r.onload = ev => { postImageBase64 = ev.target.result; var p = document.getElementById('post-img-preview'); p.src = postImageBase64; p.style.display = 'block'; document.getElementById('remove-img-btn').style.display = 'block'; }; 
-                r.readAsDataURL(f);
+                var r = new FileReader(); r.onload = ev => { postImageBase64 = ev.target.result; var p = document.getElementById('post-img-preview'); p.src = postImageBase64; p.style.display = 'block'; document.getElementById('remove-img-btn').style.display = 'block'; }; r.readAsDataURL(f);
             }; input.click();
         }
 
@@ -964,23 +643,16 @@
             if (!t || !c) return showToast('标题和正文不能为空');
             var btn = document.getElementById('post-submit-btn'); btn.disabled = true; btn.innerText = '发布中...';
 
-            fetch(apiUrl + '/posts', { 
-                method: 'POST', headers, 
-                body: JSON.stringify({ title: t, content: c, author: currentNickname, category: cat, image_url: postImageBase64, likes_count: 0, coins_received: 0, favorites_count: 0, forwards_count: 0 }) 
-            }).then(() => {
-                showToast('发布成功'); 
-                document.getElementById('post-title').value = ''; document.getElementById('post-content').value = ''; removePostImage(); 
+            fetch(apiUrl + '/posts', { method: 'POST', headers, body: JSON.stringify({ title: t, content: c, author: currentNickname, category: cat, image_url: postImageBase64, likes_count: 0, coins_received: 0, favorites_count: 0, forwards_count: 0 }) }).then(() => {
+                showToast('发布成功'); document.getElementById('post-title').value = ''; document.getElementById('post-content').value = ''; removePostImage(); 
                 currentCategory = cat; currentListMode = 'board'; navTo('list');
             }).finally(() => { btn.disabled = false; btn.innerText = '发布'; });
         }
 
-        // ---------------------------------------------------------
-        // 6. 详情页与防刷互动
-        // ---------------------------------------------------------
+        // 详情页与防刷逻辑
         function openDetail(id) {
             currentPostId = id; navTo('detail'); document.getElementById('detail-container').innerHTML = '加载中...'; cancelReply(); 
             
-            // 先获取帖子主体内容（保证不白屏）
             fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(posts => {
                 if(!posts || posts.length === 0) return;
                 var p = posts[0];
@@ -989,16 +661,18 @@
                 var friendBtn = (p.author !== currentNickname) ? `<button id="add-friend-btn" style="background:var(--primary-color);color:#fff;border:none;padding:4px 12px;border-radius:12px;font-size:12px;cursor:pointer;margin-left:10px;" onclick="addFriend('${p.author}')">加好友</button>` : '';
                 var forwardUrl = window.location.href.split('?')[0] + '?post=' + id;
                 
-                // 先渲染主体，互动按钮默认未点亮，稍后异步检测状态
+                var likes = parseInt(p.likes_count) || 0;
+                var coins = parseInt(p.coins_received) || 0;
+
                 var actionsHtml = `
                     <div class="bili-action-bar">
                         <div class="bili-btn" id="btn-like" onclick="doLike(${p.id})">
                             <div class="bili-icon">👍</div>
-                            <div class="bili-count">${p.likes_count||0}</div>
+                            <div class="bili-count">${likes}</div>
                         </div>
                         <div class="bili-btn" id="btn-coin" onclick="doCoin(${p.id})">
                             <div class="bili-icon">🪙</div>
-                            <div class="bili-count">${p.coins_received||0}</div>
+                            <div class="bili-count">${coins}</div>
                         </div>
                         <div class="bili-btn" id="btn-fav" onclick="toggleFavorite(${p.id})">
                             <div class="bili-icon">⭐</div>
@@ -1021,44 +695,28 @@
                         <div class="detail-content">${mediaHtml}${p.content}</div>
                         ${actionsHtml}
                     </div>`;
-                    
                 if (p.author !== currentNickname) checkFriendStatus(p.author);
-                
-                // 异步检测当前用户对这篇文章的状态（是否点过赞/投过币/收过藏）
                 checkPostStatus(id);
             });
 
             loadComments(id);
         }
 
-        // 检查帖子互动状态
         function checkPostStatus(id) {
-            // 检查点赞
-            fetch(apiUrl + `/post_likes?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
-            .then(r => r.json()).then(d => {
-                if (d.length > 0) document.getElementById('btn-like').classList.add('active');
-            });
-            // 检查投币
-            fetch(apiUrl + `/post_coins?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
-            .then(r => r.json()).then(d => {
-                if (d.length > 0) { var b = document.getElementById('btn-coin'); b.classList.add('active'); b.classList.add('coin'); }
-            });
-            // 检查收藏
-            fetch(apiUrl + `/favorites?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers })
-            .then(r => r.json()).then(d => {
-                if (d.length > 0) { var b = document.getElementById('btn-fav'); b.classList.add('active'); b.innerHTML = '<div class="bili-icon">⭐</div><div>已收藏</div>'; }
-            });
+            fetch(apiUrl + `/post_likes?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json()).then(d => { if (d.length > 0) document.getElementById('btn-like').classList.add('active'); });
+            fetch(apiUrl + `/post_coins?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json()).then(d => { if (d.length > 0) { var b = document.getElementById('btn-coin'); b.classList.add('active'); b.classList.add('coin'); } });
+            fetch(apiUrl + `/favorites?post_id=eq.${id}&user_nickname=eq.${currentNickname}`, { headers }).then(r => r.json()).then(d => { if (d.length > 0) { var b = document.getElementById('btn-fav'); b.classList.add('active'); b.innerHTML = '<div class="bili-icon">⭐</div><div>已收藏</div>'; } });
         }
 
         function doLike(id) {
             var btn = document.getElementById('btn-like');
             if (btn.classList.contains('active')) return showToast('你已经点过赞了！');
             
-            fetch(apiUrl + '/post_likes', { method: 'POST', headers, body: JSON.stringify({ post_id: id, user_nickname: currentNickname }) })
-            .then(res => {
+            fetch(apiUrl + '/post_likes', { method: 'POST', headers, body: JSON.stringify({ post_id: id, user_nickname: currentNickname }) }).then(res => {
                 if(!res.ok) throw new Error('记录失败');
                 return fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
-                    return fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ likes_count: (d[0].likes_count || 0) + 1 }) });
+                    var current = parseInt(d[0].likes_count) || 0;
+                    return fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ likes_count: current + 1 }) });
                 });
             }).then(() => { openDetail(id); loadTotalLikes(); }).catch(e => showToast(e.message));
         }
@@ -1069,13 +727,13 @@
             if (myCoins <= 0) return showToast('硬币不足，去主页签到吧！');
             if (!confirm('确定消耗 1 个硬币投给这篇帖子吗？')) return;
 
-            fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ coins: myCoins - 1 }) })
-            .then(() => {
+            fetch(apiUrl + '/users?nickname=eq.' + currentNickname, { method: 'PATCH', headers, body: JSON.stringify({ coins: myCoins - 1 }) }).then(() => {
                 myCoins--; document.getElementById('home-coins').innerText = `🪙 ${myCoins}`;
                 return fetch(apiUrl + '/post_coins', { method: 'POST', headers, body: JSON.stringify({ post_id: id, user_nickname: currentNickname }) });
             }).then(() => {
                 return fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
-                    return fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ coins_received: (d[0].coins_received || 0) + 1 }) });
+                    var current = parseInt(d[0].coins_received) || 0;
+                    return fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ coins_received: current + 1 }) });
                 });
             }).then(() => { showToast('投币成功！'); openDetail(id); });
         }
@@ -1083,17 +741,17 @@
         function toggleFavorite(id) {
             var btn = document.getElementById('btn-fav');
             if (btn.classList.contains('active')) {
-                fetch(apiUrl + '/favorites?user_nickname=eq.' + currentNickname + '&post_id=eq.' + id, { method: 'DELETE', headers })
-                .then(() => {
+                fetch(apiUrl + '/favorites?user_nickname=eq.' + currentNickname + '&post_id=eq.' + id, { method: 'DELETE', headers }).then(() => {
                     fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
-                        fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ favorites_count: Math.max(0, (d[0].favorites_count || 1) - 1) }) });
+                        var current = parseInt(d[0].favorites_count) || 0;
+                        fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ favorites_count: Math.max(0, current - 1) }) });
                     });
                 }).finally(() => openDetail(id));
             } else {
-                fetch(apiUrl + '/favorites', { method: 'POST', headers, body: JSON.stringify({ user_nickname: currentNickname, post_id: id }) })
-                .then(() => {
+                fetch(apiUrl + '/favorites', { method: 'POST', headers, body: JSON.stringify({ user_nickname: currentNickname, post_id: id }) }).then(() => {
                     fetch(apiUrl + '/posts?id=eq.' + id, { headers }).then(r => r.json()).then(d => {
-                        fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ favorites_count: (d[0].favorites_count || 0) + 1 }) });
+                        var current = parseInt(d[0].favorites_count) || 0;
+                        fetch(apiUrl + '/posts?id=eq.' + id, { method: 'PATCH', headers, body: JSON.stringify({ favorites_count: current + 1 }) });
                     });
                 }).then(() => { showToast('已加入收藏夹'); openDetail(id); });
             }
@@ -1101,14 +759,12 @@
 
         function doForward(url, title) {
             fetch(apiUrl + '/posts?id=eq.' + currentPostId, { headers }).then(r => r.json()).then(d => {
-                return fetch(apiUrl + '/posts?id=eq.' + currentPostId, { method: 'PATCH', headers, body: JSON.stringify({ forwards_count: (d[0].forwards_count || 0) + 1 }) });
+                var current = parseInt(d[0].forwards_count) || 0;
+                return fetch(apiUrl + '/posts?id=eq.' + currentPostId, { method: 'PATCH', headers, body: JSON.stringify({ forwards_count: current + 1 }) });
             });
             var txt = `【分享文章】${title}\n${url}`;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(txt).then(() => { showToast('链接已复制'); openDetail(currentPostId); });
-            } else {
-                prompt('复制链接：', txt);
-            }
+            if (navigator.clipboard) { navigator.clipboard.writeText(txt).then(() => { showToast('链接已复制'); openDetail(currentPostId); }); } 
+            else { prompt('复制链接：', txt); }
         }
 
         function addFriend(author) {
@@ -1124,13 +780,9 @@
             });
         }
 
-        // ---------------------------------------------------------
-        // 7. 评论区功能
-        // ---------------------------------------------------------
+        // 评论区
         function loadComments(postId) {
-            fetch(apiUrl + `/comments?post_id=eq.${postId}&order=created_at.asc`, { headers })
-            .then(r => r.json())
-            .then(comments => {
+            fetch(apiUrl + `/comments?post_id=eq.${postId}&order=created_at.asc`, { headers }).then(r => r.json()).then(comments => {
                 if (comments.length === 0) { document.getElementById('comment-container').innerHTML = '<div class="empty">暂无回复</div>'; return; }
                 var mainComments = comments.filter(c => !c.parent_id);
                 var subComments = comments.filter(c => c.parent_id);
@@ -1151,19 +803,15 @@
         function renderSingleComment(c, isSub) {
             var textHtml = c.content.replace(/@([^\s]+)/g, '<span class="at-user">@$1</span>');
             if (isSub) {
-                return `<div class="sub-comment-item">
-                            <span class="sub-author">${c.author}</span>: <span>${textHtml}</span>
+                return `<div class="sub-comment-item"><span class="sub-author">${c.author}</span>: <span>${textHtml}</span>
                             <div style="margin-top:5px; font-size:11px; color:var(--text-light); display:flex; gap:10px;">
                                 <span onclick="prepareReply(${c.id}, '${c.author}')">回复</span>
                                 <span class="comment-action-btn" id="clike-${c.id}" onclick="doCommentLike(${c.id})">👍 <span class="count">${c.likes_count||0}</span></span>
                             </div>
                         </div>`;
             } else {
-                return `<div class="comment-wrapper">
-                            <div class="comment-avatar">${c.author.charAt(0).toUpperCase()}</div>
-                            <div class="comment-body">
-                                <div class="comment-author">${c.author}</div>
-                                <div class="comment-text">${textHtml}</div>
+                return `<div class="comment-wrapper"><div class="comment-avatar">${c.author.charAt(0).toUpperCase()}</div>
+                            <div class="comment-body"><div class="comment-author">${c.author}</div><div class="comment-text">${textHtml}</div>
                                 <div class="comment-actions">
                                     <div class="comment-action-btn" onclick="prepareReply(${c.id}, '${c.author}')">💬 回复</div>
                                     <div class="comment-action-btn" id="clike-${c.id}" onclick="doCommentLike(${c.id})">👍 <span class="count">${c.likes_count||0}</span></div>
@@ -1188,15 +836,13 @@
         function submitComment() {
             var c = document.getElementById('comment-content').value.trim();
             if(!c) return showToast('内容不能为空');
-            fetch(apiUrl + '/comments', { method: 'POST', headers, body: JSON.stringify({ post_id: currentPostId, content: c, author: currentNickname, parent_id: replyToCommentId }) })
-            .then(() => { cancelReply(); loadComments(currentPostId); showToast('发送成功'); });
+            fetch(apiUrl + '/comments', { method: 'POST', headers, body: JSON.stringify({ post_id: currentPostId, content: c, author: currentNickname, parent_id: replyToCommentId }) }).then(() => { cancelReply(); loadComments(currentPostId); showToast('发送成功'); });
         }
 
         function doCommentLike(commentId) {
             var btn = document.getElementById('clike-' + commentId);
             if(btn.classList.contains('liked')) return showToast('已经赞过了');
-            fetch(apiUrl + '/comment_likes', { method: 'POST', headers, body: JSON.stringify({ comment_id: commentId, user_nickname: currentNickname }) })
-            .then(res => {
+            fetch(apiUrl + '/comment_likes', { method: 'POST', headers, body: JSON.stringify({ comment_id: commentId, user_nickname: currentNickname }) }).then(res => {
                 if(!res.ok) throw new Error('已经赞过了');
                 return fetch(apiUrl + '/comments?id=eq.' + commentId, { headers }).then(r => r.json()).then(d => {
                     return fetch(apiUrl + '/comments?id=eq.' + commentId, { method: 'PATCH', headers, body: JSON.stringify({ likes_count: (d[0].likes_count || 0) + 1 }) });
@@ -1204,21 +850,14 @@
             }).then(() => { loadComments(currentPostId); }).catch(e => showToast(e.message));
         }
 
-        // ---------------------------------------------------------
-        // 8. 聊天系统
-        // ---------------------------------------------------------
+        // 聊天与通知
         function loadChatHall() {
             document.getElementById('friend-list-container').innerHTML = '<div class="empty">加载好友中...</div>';
             document.getElementById('group-list-container').innerHTML = '<div class="empty">加载群聊中...</div>';
-            
             fetch(apiUrl + `/friends?or=(user_a.eq.${currentNickname},user_b.eq.${currentNickname})`, { headers }).then(r => r.json()).then(data => {
                 if (data.length === 0) return document.getElementById('friend-list-container').innerHTML = '<div class="empty">暂无好友</div>';
-                document.getElementById('friend-list-container').innerHTML = data.map(f => {
-                    var friendName = f.user_a === currentNickname ? f.user_b : f.user_a;
-                    return `<div class="card" onclick="openChatRoom('private', '${friendName}', '${friendName}')"><span style="font-size:20px;margin-right:10px;">👤</span><span style="flex:1;">${friendName}</span><span class="card-arrow">›</span></div>`;
-                }).join('');
+                document.getElementById('friend-list-container').innerHTML = data.map(f => { var friendName = f.user_a === currentNickname ? f.user_b : f.user_a; return `<div class="card" onclick="openChatRoom('private', '${friendName}', '${friendName}')"><span style="font-size:20px;margin-right:10px;">👤</span><span style="flex:1;">${friendName}</span><span class="card-arrow">›</span></div>`; }).join('');
             });
-
             fetch(apiUrl + `/group_members?username=eq.${currentNickname}`, { headers }).then(r => r.json()).then(mems => {
                 if (mems.length === 0) return document.getElementById('group-list-container').innerHTML = '<div class="empty">暂无群聊</div>';
                 var gIds = mems.map(m => m.group_id).join(',');
@@ -1268,9 +907,6 @@
         function doSendMsg(type, c) { return fetch(apiUrl + '/messages', { method: 'POST', headers, body: JSON.stringify({ sender: currentNickname, receiver_id: currentChatId, chat_type: currentChatType, msg_type: type, content: c }) }).then(r => { if(r.ok) fetchMessages(false); }); }
         function recallMsg(id) { if(!confirm('撤回？')) return; fetch(apiUrl + '/messages?id=eq.' + id, { method: 'DELETE', headers }).then(r => { if(r.ok) { lastMsgId=0; document.getElementById('chat-messages-container').innerHTML=''; fetchMessages(true); } }); }
 
-        // ---------------------------------------------------------
-        // 9. 微信级通知
-        // ---------------------------------------------------------
         function startNotificationPolling() {
             if(!currentNickname) return;
             notifyTimer = setInterval(checkNewNotifications, 10000); 
